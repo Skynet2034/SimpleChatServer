@@ -36,13 +36,15 @@ public class ClientStub extends Thread { //заглушка клиентской
             while (true) {
                 String clientMessage = messages[i.get()];
                 pw.println(clientMessage);
-                String messageServer = "";
-                while (messageServer != null) {
-                    messageServer = br.readLine();
-                    System.out.println(messageServer);//ответ сервера
-                }
-                if (messageServer.equalsIgnoreCase("shutdown")) break;
+                String messageServer ="";
+                String st=" ";
+                while ((st!=null)&&br.ready()) {
+                    st=br.readLine();
+                    messageServer+=st+"\n";
+                    }
+                System.out.println(messageServer);//ответ сервера
                 i.getAndIncrement();
+                if (i.intValue()>2) break;
                 Thread.sleep(50);
             }
         }

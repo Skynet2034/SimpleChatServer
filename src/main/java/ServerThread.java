@@ -45,9 +45,11 @@ reader=br;
                 ServerApp.clients.put(nick, this);
 
                     while (true) {
+
                         String messageText=reader.readLine();
-                        if (messageText.equalsIgnoreCase("exit")) {
+                           if (messageText.equalsIgnoreCase("exit")) {
                             writer.println("shutdown");
+                         //   Thread.sleep(100);
                             break;
                         }
                         CopyOnWriteArraySet<String> recepients=new CopyOnWriteArraySet<>();
@@ -55,9 +57,10 @@ reader=br;
                         recepients.remove(this.nick); //список получателей сообщения - всем, кроме отправителя
                         Message messageClient=new Message(this.nick, recepients, new Date(), messageText);
                         send(messageClient);
-                        writer.println("to: "+nick+" message sent");
+                        Thread.sleep(50);
+                        writer.println("form server to "+nick+": your message has been sent");
                                       }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 System.err.println(e.getMessage());
             } finally {
                        System.out.println("Соединение разорвано");
