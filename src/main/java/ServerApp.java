@@ -1,8 +1,13 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ServerApp {
+public class ServerApp {//основной класс для запуска серверной части
+    public static Map<String, ServerThread> clients=new HashMap<>();//список активных клиентов
 
     public static void main(String[] args) {
 
