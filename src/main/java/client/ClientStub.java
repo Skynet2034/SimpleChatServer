@@ -3,7 +3,6 @@ package client;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClientStub extends Thread { //заглушка клиентской чатси - для тестовых целей
 
@@ -13,6 +12,7 @@ public class ClientStub extends Thread { //заглушка клиентской
         this.nick = nick;
     }
 
+    @Override
     public void run() {
         System.out.println("Инициализация подключения к серверу");
 
@@ -25,20 +25,16 @@ public class ClientStub extends Thread { //заглушка клиентской
 
             PrintWriter pw = new PrintWriter(bw, true);
             pw.println(nick);
-            String[] messages = {"Message1" + nick, "Message2" + nick, "exit" + nick};//сообщения от клиента, последнее -команда выхода/завершенимя сеанса
-            AtomicInteger i = new AtomicInteger(0);
+            Thread.sleep(1000);
+            String[] messages = {"Message1" + nick, "Message2" + nick, "exit"};//сообщения от клиента, последнее -команда выхода/завершенимя сеанса
             while (true) {
-                String clientMessage = messages[i.get()];
-                pw.println(clientMessage);
-                String messageServer = "";
-                String st = " ";
-                while ((st != null) && br.ready()) {
-                    st = br.readLine();
-                    messageServer += st + "\n";
+                for (String clientMessage : messages) {
+                    pw.println(clientMessage);
                 }
-                System.out.println(messageServer);//ответ сервера
-                i.getAndIncrement();
-                if (i.intValue() > 2) break;
+                String messageServer = "";
+                while ((messageServer = br.readLine()) != null) {
+                    System.out.println(messageServer);
+                }
                 Thread.sleep(50);
             }
         } catch (UnknownHostException | FileNotFoundException e) {

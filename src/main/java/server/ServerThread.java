@@ -38,12 +38,15 @@ public class ServerThread extends Thread implements EventListener { //поток
                 //посылаем сообщения всем кроме текущего
                 this.server.broadcastMessageToAllClientsExcludingOriginator(this);
                 Thread.sleep(50);
-                writer.println("form server to " + nick + ": your message has been sent");
+                writer.println("from server to " + nick + ": your message has been sent");
             }
+
+            writer.println("shutdown");
+            socket.close();
+
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         } finally {
-            writer.println("shutdown");
             System.out.println("Соединение разорвано");
         }
     }
