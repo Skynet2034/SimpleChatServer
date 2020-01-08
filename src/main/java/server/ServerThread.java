@@ -45,14 +45,14 @@ public void logout()
             while (true) {
                 messageText = reader.readLine();
                 if (messageText.equalsIgnoreCase("exit"))
-                    logout();
+                break;
                 message = new Message(this.nick, new Date(), messageText);
                 //посылаем сообщения всем кроме текущего
                 ServerApp.send(this);
                 Thread.sleep(50);
                 writer.println("from server to " + nick + ": your message has been sent");
             }
-
+            logout();
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         } catch (Exception e) {

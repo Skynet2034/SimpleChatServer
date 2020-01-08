@@ -27,16 +27,22 @@ Thread.sleep(1000);
             pw.println(nick);
             Thread.sleep(50);
             String[] messages = {"Message1" + nick, "Message2" + nick, "exit"};//сообщения от клиента, последнее -команда выхода/завершенимя сеанса
+            exit:
             while (true) {
                 for (String clientMessage : messages) {
                     pw.println(clientMessage);
+
+                    String messageServer = "";
+                    while (((messageServer = br.readLine()) != null) && br.ready()) {
+                        System.out.println(messageServer);
+                    }
+                    if (messageServer.equalsIgnoreCase("shutdown")) {
+                        Thread.sleep(100);
+                        break exit;
+                    }
+
+                    Thread.sleep(50);
                 }
-                String messageServer = "";
-                while (((messageServer = br.readLine()) != null)&&br.ready()) {
-                    System.out.println(messageServer);
-                }
-                if (messageServer.equalsIgnoreCase("shutdown")) break;
-                Thread.sleep(50);
             }
         } catch (UnknownHostException | FileNotFoundException e) {
             System.err.println(e.getMessage());
