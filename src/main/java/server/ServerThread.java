@@ -46,6 +46,8 @@ public class ServerThread extends Thread implements EventListener { //поток
 
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         } finally {
             System.out.println("Соединение разорвано");
         }

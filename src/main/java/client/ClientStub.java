@@ -43,6 +43,9 @@ public class ClientStub extends Thread { //заглушка клиентской
             System.err.println(e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+
         } finally {
             System.out.println("Соединение разорвано");
         }
