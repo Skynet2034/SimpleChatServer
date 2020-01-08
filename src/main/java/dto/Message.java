@@ -2,10 +2,10 @@ package dto;
 
 import java.util.Date;
 
-public class Message { //Структура сообщения -  отправитель, время отправления, список получателей, тектс сообщения
-    private String sender;
-    private Date date;
-    private String text;
+public class Message { //Структура сообщения -  отправитель, время отправления, текст сообщения
+   public String sender;
+    public Date date;
+    public String text;
 
     @Override
     public String toString() {
@@ -20,27 +20,4 @@ public class Message { //Структура сообщения -  отправи
         this.text = text;
     }
 
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 }

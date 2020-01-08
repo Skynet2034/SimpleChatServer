@@ -15,34 +15,43 @@ public class ServerThread extends Thread implements EventListener { //поток
     private BufferedReader reader;
     private PrintWriter writer;
     private Message message;
-    private ServerApp server;
+   // private ServerApp server;
 
-    public ServerThread(Socket socket, ServerApp serverApp) {
+    public ServerThread(Socket socket) {
         this.socket = socket;
-        this.server = serverApp;
     }
-
+    public void authorize() throws IOException {
+        this.nick = reader.readLine();
+        ServerApp.subscribe(this);
+        message=new Message(nick, new Date(), "user "+nick+" logged in");
+        ServerApp.send(this);
+    }
+public void logout()
+{
+    writer.println("shutdown");
+    message=new Message(nick, new Date(), "user "+nick+" logged out" );
+    ServerApp.send(this);
+    ServerApp.unsubscribe(this);
+}
     @Override
     public void run() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
             reader = br;
-            PrintWriter pw = new PrintWriter(bw, true);
-            writer = pw;
-            this.nick = reader.readLine();//первое сообщение от клиента - его логин/никнейм, для идентификации юзера
-
+            writer = new PrintWriter(bw, true);
+            authorize();
+           ;//первое сообщение от клиента - его логин/никнейм, для идентификации юзера
             String messageText = "";
-            while (!messageText.equalsIgnoreCase("exit")) {
+            while (true) {
                 messageText = reader.readLine();
+                if (messageText.equalsIgnoreCase("exit"))
+                    logout();
                 message = new Message(this.nick, new Date(), messageText);
                 //посылаем сообщения всем кроме текущего
-                this.server.broadcastMessageToAllClientsExcludingOriginator(this);
+                ServerApp.send(this);
                 Thread.sleep(50);
                 writer.println("from server to " + nick + ": your message has been sent");
             }
-
-            writer.println("shutdown");
-            socket.close();
 
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());

@@ -8,7 +8,7 @@ public class EventManager {
 
     //паттерн наблюдатель
 
-    Map<Events, CopyOnWriteArraySet<EventListener>> listeners = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Events, CopyOnWriteArraySet<EventListener>> listeners = new ConcurrentHashMap<>();
 
     public EventManager(Events... operations) {
         for (Events operation : operations) {

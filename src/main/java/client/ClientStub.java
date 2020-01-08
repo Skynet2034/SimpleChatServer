@@ -22,19 +22,20 @@ public class ClientStub extends Thread { //заглушка клиентской
              BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
             System.out.println("Соединение установлено");
-
+Thread.sleep(1000);
             PrintWriter pw = new PrintWriter(bw, true);
             pw.println(nick);
-            Thread.sleep(1000);
+            Thread.sleep(50);
             String[] messages = {"Message1" + nick, "Message2" + nick, "exit"};//сообщения от клиента, последнее -команда выхода/завершенимя сеанса
             while (true) {
                 for (String clientMessage : messages) {
                     pw.println(clientMessage);
                 }
                 String messageServer = "";
-                while ((messageServer = br.readLine()) != null) {
+                while (((messageServer = br.readLine()) != null)&&br.ready()) {
                     System.out.println(messageServer);
                 }
+                if (messageServer.equalsIgnoreCase("shutdown")) break;
                 Thread.sleep(50);
             }
         } catch (UnknownHostException | FileNotFoundException e) {
