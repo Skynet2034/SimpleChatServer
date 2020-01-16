@@ -1,14 +1,19 @@
-import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerApp {
 
+    private static final Logger log = LoggerFactory.getLogger(ServerApp.class);
+
     public static void main(String[] args) {
 
-        System.out.println("Попытка запуска сервера");
+        log.info("Попытка запуска сервера");
         try (ServerSocket serverSocket = new ServerSocket(10000)) {
-            System.out.println("Сервер запущен и ждет соединений");
+            log.info("Сервер запущен и ждет соединений");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -17,11 +22,10 @@ public class ServerApp {
                 Thread.sleep(50);
             }
 
-            // System.out.println("Сервер завершил работу");
         } catch (IOException | InterruptedException ex) {
-            System.err.println(ex.getMessage());
+            log.error("Произошла ошибка {}", ex.getMessage());
         } finally {
-            System.out.println("Сервер выключен");
+            log.info("Сервер выключен");
         }
     }
 }
